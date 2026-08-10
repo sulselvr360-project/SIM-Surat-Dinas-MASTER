@@ -1,0 +1,10 @@
+{
+  "name": "SIM-Surat Dinas Master",
+  "description": "Imported from GitHub: sulselvr360-project/SIM-Surat",
+  "requestFramePermissions": [
+    "camera"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

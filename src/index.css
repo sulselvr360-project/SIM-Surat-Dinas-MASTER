@@ -1,0 +1,86 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-slate-50 text-slate-800 font-sans;
+  }
+}
+
+/* Custom print styling for Kop Surat, Lembar Disposisi & Buku Agenda */
+@media print {
+  @page {
+    size: portrait;
+    margin: 8mm 10mm 8mm 10mm;
+  }
+
+  html, body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    height: auto !important;
+    min-height: auto !important;
+    overflow: visible !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Hide UI elements non-relevant for print */
+  .no-print, nav, sidebar, header, button {
+    display: none !important;
+  }
+
+  /* Reset fixed modal overlays and backdrop filters so they don't clip or darken print output */
+  .fixed, [class*="fixed"], [class*="backdrop-blur"] {
+    position: static !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    max-height: none !important;
+    height: auto !important;
+    width: 100% !important;
+    box-shadow: none !important;
+    border: none !important;
+    inset: auto !important;
+  }
+
+  /* Remove scrollbars and height restrictions on modal body containers */
+  .max-h-\[92vh\], .max-h-\[90vh\], .overflow-y-auto, .overflow-hidden {
+    overflow: visible !important;
+    max-height: none !important;
+    height: auto !important;
+    box-shadow: none !important;
+    border: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Printable area layout */
+  .printable-area {
+    display: block !important;
+    position: static !important;
+    visibility: visible !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+    box-shadow: none !important;
+    border: none !important;
+    page-break-inside: auto;
+  }
+
+  .printable-area * {
+    visibility: visible !important;
+  }
+
+  /* Avoid page break inside table rows, images, and signature cards */
+  tr, img, table, .no-break {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "entities": {
+    "suratMasuk": {
+      "title": "Surat Masuk",
+      "description": "Daftar surat masuk dan disposisi",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "noAgenda": { "type": "string" },
+        "noSurat": { "type": "string" },
+        "tglSurat": { "type": "string" },
+        "tglDiterima": { "type": "string" },
+        "pengirim": { "type": "string" },
+        "perihal": { "type": "string" },
+        "kodeKlasifikasi": { "type": "string" },
+        "sifatSurat": { "type": "string" },
+        "isiRingkas": { "type": "string" },
+        "status": { "type": "string" },
+        "disposisiList": { "type": "array" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["noAgenda", "noSurat", "tglSurat", "pengirim", "perihal"]
+    },
+    "suratKeluar": {
+      "title": "Surat Keluar",
+      "description": "Daftar surat keluar",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "noAgenda": { "type": "string" },
+        "noSurat": { "type": "string" },
+        "tglSurat": { "type": "string" },
+        "tujuan": { "type": "string" },
+        "perihal": { "type": "string" },
+        "kodeKlasifikasi": { "type": "string" },
+        "sifatSurat": { "type": "string" },
+        "isiSurat": { "type": "string" },
+        "penandatangan": { "type": "string" },
+        "status": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["noAgenda", "noSurat", "tglSurat", "tujuan", "perihal"]
+    },
+    "kodeKlasifikasi": {
+      "title": "Kode Klasifikasi",
+      "description": "Daftar kode klasifikasi surat",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "kode": { "type": "string" },
+        "nama": { "type": "string" },
+        "keterangan": { "type": "string" }
+      },
+      "required": ["kode", "nama"]
+    },
+    "users": {
+      "title": "Pengguna",
+      "description": "Daftar akun pengguna sistem",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "username": { "type": "string" },
+        "nama": { "type": "string" },
+        "role": { "type": "string" },
+        "jabatan": { "type": "string" }
+      },
+      "required": ["username", "nama", "role"]
+    },
+    "config": {
+      "title": "Pengaturan Instansi",
+      "description": "Konfigurasi instansi",
+      "type": "object"
+    }
+  }
+}
