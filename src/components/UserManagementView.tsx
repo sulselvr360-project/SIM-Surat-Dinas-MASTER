@@ -17,7 +17,9 @@ import {
   Sliders, 
   FileText, 
   Eye, 
-  AlertTriangle 
+  AlertTriangle,
+  Save,
+  CheckCircle2
 } from 'lucide-react';
 
 interface UserManagementViewProps {
@@ -39,6 +41,7 @@ export const UserManagementView: React.FC<UserManagementViewProps> = ({
 }) => {
   const [search, setSearch] = useState('');
   const [roleFilter, setRoleFilter] = useState<string>('semua');
+  const [saveToast, setSaveToast] = useState<string | null>(null);
 
   // Modals
   const [showAddModal, setShowAddModal] = useState(false);
@@ -58,6 +61,20 @@ export const UserManagementView: React.FC<UserManagementViewProps> = ({
   const [editJabatan, setEditJabatan] = useState('');
   const [editRole, setEditRole] = useState<AppUserRole>('operator');
   const [editPassword, setEditPassword] = useState('');
+
+  const triggerToast = (msg: string) => {
+    setSaveToast(msg);
+    setTimeout(() => {
+      setSaveToast(null);
+    }, 3500);
+  };
+
+  // Explicit Manual Save action
+  const handleSaveAllUsers = () => {
+    // Explicitly sync to LocalStorage
+    localStorage.setItem('sim_surat_users', JSON.stringify(userAccounts));
+    triggerToast('Data seluruh pengguna & level akses berhasil disimpan & disinkronkan ke sistem!');
+  };
 
   // Filter List
   const filteredUsers = userAccounts.filter((u) => {
@@ -94,6 +111,8 @@ export const UserManagementView: React.FC<UserManagementViewProps> = ({
       role: newRole,
       password: newPassword.trim() || '123456',
     });
+
+    triggerToast(`User ${newName.trim()} berhasil ditambahkan dan tersimpan!`);
 
     // Reset Form
     setNewUsername('');
@@ -144,6 +163,7 @@ export const UserManagementView: React.FC<UserManagementViewProps> = ({
     }
 
     onUpdateUser(editingUser.id, updates);
+    triggerToast(`Perubahan data user @${editUsername.trim()} berhasil disimpan!`);
     setEditingUser(null);
   };
 
@@ -186,6 +206,19 @@ export const UserManagementView: React.FC<UserManagementViewProps> = ({
   return (
     <div className="space-y-6">
       
+      {/* Save Notification Toast Banner */}
+      {saveToast && (
+        <div className="bg-emerald-600 text-white px-4 py-3 rounded-xl shadow-lg flex items-center justify-between space-x-3 animate-in fade-in slide-in-from-top-2">
+          <div className="flex items-center space-x-2.5">
+            <CheckCircle2 className="w-5 h-5 text-emerald-200 shrink-0" />
+            <p className="text-xs font-bold">{saveToast}</p>
+          </div>
+          <button onClick={() => setSaveToast(null)} className="text-emerald-200 hover:text-white">
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+      )}
+
       {/* Header Bar */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
         <div className="flex items-center space-x-3">
@@ -200,13 +233,26 @@ export const UserManagementView: React.FC<UserManagementViewProps> = ({
           </div>
         </div>
 
-        <button
-          onClick={() => setShowAddModal(true)}
-          className="inline-flex items-center space-x-2 px-4 py-2.5 bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold rounded-xl shadow-md transition-all self-start md:self-auto cursor-pointer"
-        >
-          <UserPlus className="w-4 h-4" />
-          <span>Tambah User Baru</span>
-        </button>
+        <div className="flex items-center space-x-2.5 self-start md:self-auto flex-wrap gap-y-2">
+          <button
+            type="button"
+            onClick={handleSaveAllUsers}
+            className="inline-flex items-center space-x-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-md transition-all cursor-pointer"
+            title="Simpan Perubahan & Sinkronkan Seluruh Data User"
+          >
+            <Save className="w-4 h-4" />
+            <span>Simpan Data User</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setShowAddModal(true)}
+            className="inline-flex items-center space-x-2 px-4 py-2.5 bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold rounded-xl shadow-md transition-all cursor-pointer"
+          >
+            <UserPlus className="w-4 h-4" />
+            <span>Tambah User Baru</span>
+          </button>
+        </div>
       </div>
 
       {/* Role Summary Stats */}
@@ -458,15 +504,16 @@ export const UserManagementView: React.FC<UserManagementViewProps> = ({
                 <button
                   type="button"
                   onClick={() => setShowAddModal(false)}
-                  className="px-3.5 py-2 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-lg"
+                  className="px-3.5 py-2 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-lg cursor-pointer"
                 >
                   Batal
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 text-xs font-bold text-white bg-purple-600 hover:bg-purple-700 rounded-lg shadow-sm"
+                  className="inline-flex items-center px-4 py-2 text-xs font-bold text-white bg-purple-600 hover:bg-purple-700 rounded-lg shadow-sm transition-all cursor-pointer"
                 >
-                  Simpan User
+                  <Save className="w-4 h-4 mr-1.5" />
+                  <span>Simpan User Baru</span>
                 </button>
               </div>
 
@@ -566,15 +613,16 @@ export const UserManagementView: React.FC<UserManagementViewProps> = ({
                 <button
                   type="button"
                   onClick={() => setEditingUser(null)}
-                  className="px-3.5 py-2 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-lg"
+                  className="px-3.5 py-2 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-lg cursor-pointer"
                 >
                   Batal
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 text-xs font-bold text-white bg-purple-600 hover:bg-purple-700 rounded-lg shadow-sm"
+                  className="inline-flex items-center px-4 py-2 text-xs font-bold text-white bg-purple-600 hover:bg-purple-700 rounded-lg shadow-sm transition-all cursor-pointer"
                 >
-                  Simpan Perubahan
+                  <Save className="w-4 h-4 mr-1.5" />
+                  <span>Simpan Perubahan User</span>
                 </button>
               </div>
 
@@ -607,7 +655,7 @@ export const UserManagementView: React.FC<UserManagementViewProps> = ({
               <button
                 type="button"
                 onClick={() => setDeleteTarget(null)}
-                className="px-3.5 py-2 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-lg"
+                className="px-3.5 py-2 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-lg cursor-pointer"
               >
                 Batal
               </button>
@@ -615,9 +663,10 @@ export const UserManagementView: React.FC<UserManagementViewProps> = ({
                 type="button"
                 onClick={() => {
                   onDeleteUser(deleteTarget.id);
+                  triggerToast(`User @${deleteTarget.username} berhasil dihapus dari sistem!`);
                   setDeleteTarget(null);
                 }}
-                className="px-4 py-2 text-xs font-bold text-white bg-red-600 hover:bg-red-700 rounded-lg shadow-sm"
+                className="px-4 py-2 text-xs font-bold text-white bg-red-600 hover:bg-red-700 rounded-lg shadow-sm cursor-pointer"
               >
                 Ya, Hapus User
               </button>

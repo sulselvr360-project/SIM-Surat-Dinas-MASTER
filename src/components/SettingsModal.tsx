@@ -77,7 +77,7 @@ const DAFTAR_OPD = [
   'DINAS KEPENDUDUKAN DAN PENCATATAN SIPIL',
   'DINAS PEKERJAAN UMUM DAN TATA RUANG',
   'DINAS PERUMAHAN KAWASAN PEMUKIMAN DAN PERTANAHAN',
-  'DINAS PARIWISATA PEMUDA DAN OLAHRAGA',
+  'DINAS PARIWISATA, PEMUDA DAN OLAHRAGA',
   'DINAS PERDAGANGAN DAN PERINDUSTRIAN',
   'DINAS KOPERASI UKM DAN TENAGA KERJA',
   'DINAS PERTANIAN DAN KETAHANAN PANGAN',
@@ -360,7 +360,14 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
               <label className="block font-bold text-slate-700 mb-1">Nama Dinas / Badan / OPD *</label>
               <div className="space-y-2">
                 <select
-                  value={DAFTAR_OPD.includes(form.subNama) ? form.subNama : ''}
+                  value={
+                    DAFTAR_OPD.find(
+                      (opd) =>
+                        opd === form.subNama ||
+                        opd.replace(/,/g, '').trim().toUpperCase() ===
+                          (form.subNama || '').replace(/,/g, '').trim().toUpperCase()
+                    ) || (form.subNama ? '' : 'DINAS PARIWISATA, PEMUDA DAN OLAHRAGA')
+                  }
                   onChange={(e) => {
                     if (e.target.value) {
                       handleChange('subNama', e.target.value);

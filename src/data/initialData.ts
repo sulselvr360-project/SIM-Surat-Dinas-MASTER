@@ -13,7 +13,7 @@ export const DEFAULT_TUJUAN_DISPOSISI = [
 
 export const initialInstansiConfig: InstansiConfig = {
   namaInstansi: 'PEMERINTAH KABUPATEN BULUKUMBA',
-  subNama: 'DINAS KOMUNIKASI INFORMATIKA DAN PERSANDIAN',
+  subNama: 'DINAS PARIWISATA, PEMUDA DAN OLAHRAGA',
   alamat: 'Jl. Jend. Sudirman No. 1, Kabupaten Bulukumba, Sulawesi Selatan 92511',
   telepon: '(0413) 81123',
   email: 'diskominfo@bulukumbakab.go.id',
