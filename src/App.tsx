@@ -62,10 +62,19 @@ export function App() {
   });
 
   // Main data collections state
-  const [suratMasukList, setSuratMasukList] = useState<SuratMasuk[]>(initialSuratMasuk);
-  const [suratKeluarList, setSuratKeluarList] = useState<SuratKeluar[]>(initialSuratKeluar);
+  const [suratMasukList, setSuratMasukList] = useState<SuratMasuk[]>(() => {
+    const saved = localStorage.getItem('sim_surat_masuk_list');
+    return saved ? JSON.parse(saved) : initialSuratMasuk;
+  });
+  const [suratKeluarList, setSuratKeluarList] = useState<SuratKeluar[]>(() => {
+    const saved = localStorage.getItem('sim_surat_keluar_list');
+    return saved ? JSON.parse(saved) : initialSuratKeluar;
+  });
   const [kodeKlasifikasiList, setKodeKlasifikasiList] = useState<KodeKlasifikasi[]>(initialKodeKlasifikasi);
-  const [instansiConfig, setInstansiConfig] = useState<InstansiConfig>(initialInstansiConfig);
+  const [instansiConfig, setInstansiConfig] = useState<InstansiConfig>(() => {
+    const saved = localStorage.getItem('sim_surat_instansi_config');
+    return saved ? JSON.parse(saved) : initialInstansiConfig;
+  });
 
   const [activeTab, setActiveTab] = useState<ActiveTab>('dashboard');
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -85,7 +94,7 @@ export function App() {
   const [showDisposisiModal, setShowDisposisiModal] = useState(false);
   const [showPrintDisposisiModal, setShowPrintDisposisiModal] = useState(false);
 
-  // Sync current logged-in user state
+  // Local storage synchronization effects for persistent state across refreshes & deployments
   useEffect(() => {
     if (currentUser) {
       localStorage.setItem('sim_surat_current_user', JSON.stringify(currentUser));
@@ -93,6 +102,43 @@ export function App() {
       localStorage.removeItem('sim_surat_current_user');
     }
   }, [currentUser]);
+
+  useEffect(() => {
+    if (userAccounts && userAccounts.length > 0) {
+      localStorage.setItem('sim_surat_users', JSON.stringify(userAccounts));
+    }
+  }, [userAccounts]);
+
+  useEffect(() => {
+    if (instansiConfig) {
+      localStorage.setItem('sim_surat_instansi_config', JSON.stringify(instansiConfig));
+    }
+  }, [instansiConfig]);
+
+  // Update dynamic favicon automatically when logo in Profil Instansi changes
+  useEffect(() => {
+    if (instansiConfig?.logoUrl) {
+      let faviconLink = document.querySelector("link[rel~='icon']") as HTMLLinkElement;
+      if (!faviconLink) {
+        faviconLink = document.createElement('link');
+        faviconLink.rel = 'icon';
+        document.getElementsByTagName('head')[0].appendChild(faviconLink);
+      }
+      faviconLink.href = instansiConfig.logoUrl;
+    }
+  }, [instansiConfig?.logoUrl]);
+
+  useEffect(() => {
+    if (suratMasukList && suratMasukList.length > 0) {
+      localStorage.setItem('sim_surat_masuk_list', JSON.stringify(suratMasukList));
+    }
+  }, [suratMasukList]);
+
+  useEffect(() => {
+    if (suratKeluarList && suratKeluarList.length > 0) {
+      localStorage.setItem('sim_surat_keluar_list', JSON.stringify(suratKeluarList));
+    }
+  }, [suratKeluarList]);
 
   // Seed Firestore initial data if empty
   useEffect(() => {
@@ -281,6 +327,7 @@ export function App() {
       ...newUser,
       id: `usr-${Date.now()}`,
     };
+    setUserAccounts((prev) => [...prev, created]);
     try {
       await setDoc(doc(db, 'users', created.id), created);
     } catch (err) {
@@ -292,6 +339,7 @@ export function App() {
     const existing = userAccounts.find((u) => u.id === id);
     if (!existing) return;
     const updated = { ...existing, ...updatedData };
+    setUserAccounts((prev) => prev.map((u) => (u.id === id ? updated : u)));
     try {
       await setDoc(doc(db, 'users', id), updated);
       if (currentUser && currentUser.id === id) {
@@ -303,6 +351,7 @@ export function App() {
   };
 
   const handleDeleteUser = async (id: string) => {
+    setUserAccounts((prev) => prev.filter((u) => u.id !== id));
     try {
       await deleteDoc(doc(db, 'users', id));
     } catch (err) {
