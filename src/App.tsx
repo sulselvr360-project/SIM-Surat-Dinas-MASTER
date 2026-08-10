@@ -209,7 +209,7 @@ export function App() {
     // 1. Listen Surat Masuk
     const unsubSM = onSnapshot(collection(db, 'suratMasuk'), (snapshot) => {
       const items: SuratMasuk[] = [];
-      snapshot.forEach((d) => items.push(d.data() as SuratMasuk));
+      snapshot.forEach((d) => items.push({ id: d.id, ...d.data() } as SuratMasuk));
       items.sort((a, b) => (b.createdAt || b.id).localeCompare(a.createdAt || a.id));
       setSuratMasukList(items);
     }, (err) => {
@@ -219,7 +219,7 @@ export function App() {
     // 2. Listen Surat Keluar
     const unsubSK = onSnapshot(collection(db, 'suratKeluar'), (snapshot) => {
       const items: SuratKeluar[] = [];
-      snapshot.forEach((d) => items.push(d.data() as SuratKeluar));
+      snapshot.forEach((d) => items.push({ id: d.id, ...d.data() } as SuratKeluar));
       items.sort((a, b) => (b.createdAt || b.id).localeCompare(a.createdAt || a.id));
       setSuratKeluarList(items);
     }, (err) => {
@@ -229,7 +229,7 @@ export function App() {
     // 3. Listen Kode Klasifikasi
     const unsubKK = onSnapshot(collection(db, 'kodeKlasifikasi'), (snapshot) => {
       const items: KodeKlasifikasi[] = [];
-      snapshot.forEach((d) => items.push(d.data() as KodeKlasifikasi));
+      snapshot.forEach((d) => items.push({ id: d.id, ...d.data() } as KodeKlasifikasi));
       setKodeKlasifikasiList(items);
     }, (err) => {
       console.warn('Firestore listener kodeKlasifikasi info:', err);
@@ -240,13 +240,31 @@ export function App() {
       if (!snapshot.empty) {
         const items: UserAccount[] = [];
         snapshot.forEach((d) => {
-          const u = d.data() as UserAccount;
-          if (u && u.id) {
-            items.push(u);
+          const data = d.data();
+          if (data) {
+            items.push({
+              id: d.id,
+              username: data.username || '',
+              name: data.name || '',
+              jabatan: data.jabatan || '',
+              role: data.role || 'user',
+              password: data.password || '123456',
+            } as UserAccount);
           }
         });
         if (items.length > 0) {
           setUserAccounts(items);
+          
+          // Keep current logged-in user state in sync if updated on another device
+          setCurrentUser((prev) => {
+            if (!prev) return null;
+            const updatedMe = items.find((u) => u.id === prev.id);
+            if (updatedMe) {
+              localStorage.setItem('sim_surat_current_user', JSON.stringify(updatedMe));
+              return updatedMe;
+            }
+            return prev;
+          });
         }
       } else {
         // If snapshot is empty, seed initial 4 default users directly to Firestore
@@ -338,18 +356,27 @@ export function App() {
     const list = usersToSync || userAccounts;
     if (!list || list.length === 0) return;
     try {
+      const snapshot = await getDocs(collection(db, 'users'));
       const batch = writeBatch(db);
+      const listIds = new Set(list.map((u) => u.id));
+
+      // Remove documents from Firestore that are no longer present in list
+      snapshot.forEach((d) => {
+        if (!listIds.has(d.id)) {
+          batch.delete(doc(db, 'users', d.id));
+        }
+      });
+
+      // Add/overwrite documents in list
       list.forEach((u) => {
         batch.set(doc(db, 'users', u.id), u);
       });
-      // Non-blocking background batch commit to prevent UI freezing/delays
-      batch.commit().then(() => {
-        console.log('All users committed and synced to Cloud Firestore successfully');
-      }).catch((err) => {
-        console.error('Background batch commit error:', err);
-      });
+
+      await batch.commit();
+      console.log('All users committed and synced to Cloud Firestore successfully');
     } catch (err) {
       console.error('Error syncing all users to Firestore:', err);
+      throw err;
     }
   };
 

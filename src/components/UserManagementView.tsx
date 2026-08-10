@@ -74,20 +74,18 @@ export const UserManagementView: React.FC<UserManagementViewProps> = ({
   };
 
   // Explicit Manual Save action directly to Firebase Firestore
-  const handleSaveAllUsers = () => {
+  const handleSaveAllUsers = async () => {
     setIsSyncing(true);
     try {
       if (onSyncAllUsers) {
-        onSyncAllUsers(userAccounts);
+        await onSyncAllUsers(userAccounts);
       }
       triggerToast('Data seluruh pengguna berhasil disimpan & disinkronkan ke Firebase Firestore!');
     } catch (e) {
       console.error('Save users error:', e);
       triggerToast('Gagal menyimpan ke Firestore. Periksa koneksi internet Anda.');
     } finally {
-      setTimeout(() => {
-        setIsSyncing(false);
-      }, 300);
+      setIsSyncing(false);
     }
   };
 
