@@ -30,6 +30,7 @@ interface UserManagementViewProps {
   onUpdateUser: (id: string, updatedData: Partial<UserAccount>) => void;
   onDeleteUser: (id: string) => void;
   onResetUsers?: () => void;
+  onSyncAllUsers?: (users?: UserAccount[]) => Promise<void>;
 }
 
 export const UserManagementView: React.FC<UserManagementViewProps> = ({
@@ -39,10 +40,12 @@ export const UserManagementView: React.FC<UserManagementViewProps> = ({
   onUpdateUser,
   onDeleteUser,
   onResetUsers,
+  onSyncAllUsers,
 }) => {
   const [search, setSearch] = useState('');
   const [roleFilter, setRoleFilter] = useState<string>('semua');
   const [saveToast, setSaveToast] = useState<string | null>(null);
+  const [isSyncing, setIsSyncing] = useState(false);
 
   // Modals
   const [showAddModal, setShowAddModal] = useState(false);
@@ -71,10 +74,19 @@ export const UserManagementView: React.FC<UserManagementViewProps> = ({
   };
 
   // Explicit Manual Save action
-  const handleSaveAllUsers = () => {
-    // Explicitly sync to LocalStorage
-    localStorage.setItem('sim_surat_users', JSON.stringify(userAccounts));
-    triggerToast('Data seluruh pengguna & level akses berhasil disimpan & disinkronkan ke sistem!');
+  const handleSaveAllUsers = async () => {
+    setIsSyncing(true);
+    try {
+      localStorage.setItem('sim_surat_users', JSON.stringify(userAccounts));
+      if (onSyncAllUsers) {
+        await onSyncAllUsers(userAccounts);
+      }
+      triggerToast('Data seluruh pengguna berhasil disimpan & disinkronkan ke Cloud Firestore / seluruh perangkat!');
+    } catch (e) {
+      triggerToast('Data berhasil disimpan secara lokal.');
+    } finally {
+      setIsSyncing(false);
+    }
   };
 
   // Filter List
@@ -253,11 +265,12 @@ export const UserManagementView: React.FC<UserManagementViewProps> = ({
           <button
             type="button"
             onClick={handleSaveAllUsers}
-            className="inline-flex items-center space-x-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-md transition-all cursor-pointer"
-            title="Simpan Perubahan & Sinkronkan Seluruh Data User"
+            disabled={isSyncing}
+            className="inline-flex items-center space-x-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-md transition-all cursor-pointer disabled:opacity-50"
+            title="Simpan Perubahan & Sinkronkan Seluruh Data User ke Cloud Firestore"
           >
-            <Save className="w-4 h-4" />
-            <span>Simpan Data User</span>
+            <Save className={`w-4 h-4 ${isSyncing ? 'animate-bounce' : ''}`} />
+            <span>{isSyncing ? 'Menyimpan & Menyinkronkan...' : 'Simpan Data User'}</span>
           </button>
 
           <button

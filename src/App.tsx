@@ -251,18 +251,30 @@ export function App() {
       console.warn('Firestore listener kodeKlasifikasi info:', err);
     });
 
-    // 4. Listen Users
+    // 4. Listen Users in Real-Time
     const unsubUsers = onSnapshot(collection(db, 'users'), (snapshot) => {
-      const userMap = new Map<string, UserAccount>();
-      initialUserAccounts.forEach((u) => userMap.set(u.id, u));
-      snapshot.forEach((d) => {
-        const u = d.data() as UserAccount;
-        if (u && u.id) {
-          userMap.set(u.id, u);
+      if (!snapshot.empty) {
+        const items: UserAccount[] = [];
+        snapshot.forEach((d) => {
+          const u = d.data() as UserAccount;
+          if (u && u.id) {
+            items.push(u);
+          }
+        });
+        if (items.length > 0) {
+          setUserAccounts(items);
+          localStorage.setItem('sim_surat_users', JSON.stringify(items));
         }
-      });
-      const items = Array.from(userMap.values());
-      setUserAccounts(items);
+      } else {
+        // If snapshot is empty, seed initial 4 default users to Firestore
+        const batch = writeBatch(db);
+        initialUserAccounts.forEach((u) => {
+          batch.set(doc(db, 'users', u.id), u);
+        });
+        batch.commit().catch((err) => console.error('Error seeding initial users:', err));
+        setUserAccounts(initialUserAccounts);
+        localStorage.setItem('sim_surat_users', JSON.stringify(initialUserAccounts));
+      }
     }, (err) => {
       console.warn('Firestore listener users info:', err);
     });
@@ -340,12 +352,30 @@ export function App() {
   };
 
   // User Management Handlers (Superadmin Only)
+  const handleSyncAllUsersToFirestore = async (usersToSync?: UserAccount[]) => {
+    const list = usersToSync || userAccounts;
+    if (!list || list.length === 0) return;
+    try {
+      const batch = writeBatch(db);
+      list.forEach((u) => {
+        batch.set(doc(db, 'users', u.id), u);
+      });
+      await batch.commit();
+      console.log('All users successfully synced to Firestore');
+    } catch (err) {
+      console.error('Error syncing all users to Firestore:', err);
+      throw err;
+    }
+  };
+
   const handleCreateUser = async (newUser: Omit<UserAccount, 'id'>) => {
     const created: UserAccount = {
       ...newUser,
       id: `usr-${Date.now()}`,
     };
-    setUserAccounts((prev) => [...prev, created]);
+    const updatedList = [...userAccounts, created];
+    setUserAccounts(updatedList);
+    localStorage.setItem('sim_surat_users', JSON.stringify(updatedList));
     try {
       await setDoc(doc(db, 'users', created.id), created);
     } catch (err) {
@@ -357,19 +387,25 @@ export function App() {
     const existing = userAccounts.find((u) => u.id === id);
     if (!existing) return;
     const updated = { ...existing, ...updatedData };
-    setUserAccounts((prev) => prev.map((u) => (u.id === id ? updated : u)));
+    const updatedList = userAccounts.map((u) => (u.id === id ? updated : u));
+    setUserAccounts(updatedList);
+    localStorage.setItem('sim_surat_users', JSON.stringify(updatedList));
+
+    if (currentUser && currentUser.id === id) {
+      setCurrentUser(updated);
+    }
+
     try {
       await setDoc(doc(db, 'users', id), updated);
-      if (currentUser && currentUser.id === id) {
-        setCurrentUser(updated);
-      }
     } catch (err) {
       console.error('Error updating user in Firestore:', err);
     }
   };
 
   const handleDeleteUser = async (id: string) => {
-    setUserAccounts((prev) => prev.filter((u) => u.id !== id));
+    const updatedList = userAccounts.filter((u) => u.id !== id);
+    setUserAccounts(updatedList);
+    localStorage.setItem('sim_surat_users', JSON.stringify(updatedList));
     try {
       await deleteDoc(doc(db, 'users', id));
     } catch (err) {
@@ -378,19 +414,24 @@ export function App() {
   };
 
   const handleResetUsers = async () => {
-    if (window.confirm('Apakah Anda yakin ingin mengembalikan daftar pengguna ke akun default bawaan sistem?')) {
+    if (window.confirm('Apakah Anda yakin ingin mengembalikan daftar pengguna ke 4 akun default bawaan sistem?')) {
       try {
+        const uSnap = await getDocs(collection(db, 'users'));
         const batch = writeBatch(db);
-        userAccounts.forEach((u) => {
-          batch.delete(doc(db, 'users', u.id));
+        uSnap.forEach((d) => {
+          batch.delete(doc(db, 'users', d.id));
         });
         initialUserAccounts.forEach((u) => {
           batch.set(doc(db, 'users', u.id), u);
         });
         await batch.commit();
-        alert('Semua akun pengguna berhasil di-reset ke akun default.');
+        setUserAccounts(initialUserAccounts);
+        localStorage.setItem('sim_surat_users', JSON.stringify(initialUserAccounts));
+        alert('Semua akun pengguna berhasil di-reset ke 4 akun default dan disinkronkan ke Cloud Firestore.');
       } catch (err) {
         console.error('Error resetting users:', err);
+        setUserAccounts(initialUserAccounts);
+        localStorage.setItem('sim_surat_users', JSON.stringify(initialUserAccounts));
       }
     }
   };
@@ -857,6 +898,7 @@ function sanitizeFirestorePayload<T extends Record<string, any>>(obj: T): Record
               onUpdateUser={handleUpdateUser}
               onDeleteUser={handleDeleteUser}
               onResetUsers={handleResetUsers}
+              onSyncAllUsers={handleSyncAllUsersToFirestore}
             />
           )}
         </main>
