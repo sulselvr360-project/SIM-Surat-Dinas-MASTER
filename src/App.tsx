@@ -342,12 +342,14 @@ export function App() {
       list.forEach((u) => {
         batch.set(doc(db, 'users', u.id), u);
       });
-
-      await batch.commit();
-      console.log('All users committed and synced to Cloud Firestore successfully');
+      // Non-blocking background batch commit to prevent UI freezing/delays
+      batch.commit().then(() => {
+        console.log('All users committed and synced to Cloud Firestore successfully');
+      }).catch((err) => {
+        console.error('Background batch commit error:', err);
+      });
     } catch (err) {
       console.error('Error syncing all users to Firestore:', err);
-      throw err;
     }
   };
 
