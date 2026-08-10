@@ -53,7 +53,20 @@ export function App() {
   // Local auth state
   const [userAccounts, setUserAccounts] = useState<UserAccount[]>(() => {
     const saved = localStorage.getItem('sim_surat_users');
-    return saved ? JSON.parse(saved) : initialUserAccounts;
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          const userMap = new Map<string, UserAccount>();
+          initialUserAccounts.forEach((u) => userMap.set(u.id, u));
+          parsed.forEach((u: UserAccount) => userMap.set(u.id, u));
+          return Array.from(userMap.values());
+        }
+      } catch (e) {
+        console.error('Error parsing sim_surat_users:', e);
+      }
+    }
+    return initialUserAccounts;
   });
 
   const [currentUser, setCurrentUser] = useState<UserAccount | null>(() => {
@@ -240,11 +253,16 @@ export function App() {
 
     // 4. Listen Users
     const unsubUsers = onSnapshot(collection(db, 'users'), (snapshot) => {
-      const items: UserAccount[] = [];
-      snapshot.forEach((d) => items.push(d.data() as UserAccount));
-      if (items.length > 0) {
-        setUserAccounts(items);
-      }
+      const userMap = new Map<string, UserAccount>();
+      initialUserAccounts.forEach((u) => userMap.set(u.id, u));
+      snapshot.forEach((d) => {
+        const u = d.data() as UserAccount;
+        if (u && u.id) {
+          userMap.set(u.id, u);
+        }
+      });
+      const items = Array.from(userMap.values());
+      setUserAccounts(items);
     }, (err) => {
       console.warn('Firestore listener users info:', err);
     });

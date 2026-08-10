@@ -19,7 +19,8 @@ import {
   Eye, 
   AlertTriangle,
   Save,
-  CheckCircle2
+  CheckCircle2,
+  RotateCcw
 } from 'lucide-react';
 
 interface UserManagementViewProps {
@@ -234,6 +235,21 @@ export const UserManagementView: React.FC<UserManagementViewProps> = ({
         </div>
 
         <div className="flex items-center space-x-2.5 self-start md:self-auto flex-wrap gap-y-2">
+          {onResetUsers && (
+            <button
+              type="button"
+              onClick={() => {
+                onResetUsers();
+                triggerToast('Semua akun pengguna berhasil di-reset ke 4 akun default bawaan!');
+              }}
+              className="inline-flex items-center space-x-2 px-3.5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition-all cursor-pointer border border-slate-200"
+              title="Reset & Kembalikan ke 4 Akun Bawaan Sistem"
+            >
+              <RotateCcw className="w-4 h-4 text-slate-500" />
+              <span>Reset Default</span>
+            </button>
+          )}
+
           <button
             type="button"
             onClick={handleSaveAllUsers}
