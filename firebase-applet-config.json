@@ -1,11 +1,11 @@
 {
-  "projectId": "gen-lang-client-0158213700",
-  "appId": "1:716757910541:web:2f5c7268b4bee35ceb8144",
-  "apiKey": "AIzaSyDt-j10rWZBjfRcIuInPRWZ7fgB7z-9qnU",
-  "authDomain": "gen-lang-client-0158213700.firebaseapp.com",
-  "storageBucket": "gen-lang-client-0158213700.firebasestorage.app",
-  "messagingSenderId": "716757910541",
+  "projectId": "sim-surat-dinas-master-true",
+  "appId": "1:82145406841:web:26d1b2ad79581cb48809a8",
+  "apiKey": "AIzaSyBsf3hXZeC_VGYX8eiY5baau3fcTyNoasw",
+  "authDomain": "sim-surat-dinas-master-true.firebaseapp.com",
+  "storageBucket": "sim-surat-dinas-master-true.firebasestorage.app",
+  "messagingSenderId": "82145406841",
   "measurementId": "",
-  "oAuthClientId": "716757910541-qi0a3j8bn73ut2r3od7dbq73k7i70pdm.apps.googleusercontent.com",
+  "oAuthClientId": "",
   "recaptchaSiteKey": ""
 }
