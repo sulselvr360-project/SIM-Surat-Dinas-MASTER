@@ -28,27 +28,64 @@ const PRESET_LOGOS = [
   {
     id: 'sulsel',
     title: 'Pemprov Sulsel',
-    desc: 'Perisai Hijau & Emas',
-    url: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" width="200" height="240"><path d="M100 10 L180 50 L180 150 C180 190 100 230 100 230 C100 230 20 190 20 150 L20 50 Z" fill="%230b6e4f" stroke="%23f4c430" stroke-width="8"/><path d="M100 25 L165 58 L165 145 C165 178 100 212 100 212 C100 212 35 178 35 145 L35 58 Z" fill="%2309533c"/><polygon points="100,45 107,66 130,66 111,80 118,101 100,88 82,101 89,80 70,66 93,66" fill="%23f4c430"/><path d="M60 120 C70 110 130 110 140 120 L135 150 C120 160 80 160 65 150 Z" fill="%23ffffff" stroke="%231e3a8a" stroke-width="3"/><path d="M100 110 L100 160 M75 140 L125 140" stroke="%23b91c1c" stroke-width="4"/><path d="M45 170 Q100 195 155 170" fill="none" stroke="%23f4c430" stroke-width="6"/></svg>'
+    desc: 'Pemprov Sulawesi Selatan',
+    url: 'https://lh3.googleusercontent.com/d/19K7g7_c1dgTW_zAgrggAHY_3EFcSCBb5',
+    fallbackUrl: 'https://drive.google.com/uc?export=view&id=19K7g7_c1dgTW_zAgrggAHY_3EFcSCBb5'
   },
   {
     id: 'garuda',
     title: 'Garuda Pancasila',
-    desc: 'Lambang Negara Emas',
-    url: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 220" width="200" height="220"><path d="M100 20 Q120 40 140 40 Q160 20 180 50 Q160 80 170 120 Q130 130 100 190 Q70 130 30 120 Q40 80 20 50 Q40 20 60 40 Q80 40 100 20 Z" fill="%23d97706" stroke="%23b45309" stroke-width="4"/><path d="M75 80 L125 80 L125 130 L75 130 Z" fill="%23b91c1c" stroke="%23ffffff" stroke-width="3"/><polygon points="100,90 103,98 112,98 105,103 108,111 100,106 92,111 95,103 88,98 97,98" fill="%23f59e0b"/><path d="M60 155 Q100 170 140 155" fill="none" stroke="%23ffffff" stroke-width="6"/><text x="100" y="163" font-family="sans-serif" font-weight="bold" font-size="8" fill="%231e293b" text-anchor="middle">BHINNEKA TUNGGAL IKA</text></svg>'
+    desc: 'Lambang Negara RI',
+    url: 'https://lh3.googleusercontent.com/d/1JWEw_l2sxHFdstWgjz7VTwREMKTVVur_',
+    fallbackUrl: 'https://drive.google.com/uc?export=view&id=1JWEw_l2sxHFdstWgjz7VTwREMKTVVur_'
   },
   {
-    id: 'pemda',
-    title: 'Pemda / Kota / Kab',
-    desc: 'Perisai Biru Bintang',
-    url: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" width="200" height="240"><path d="M100 10 L180 45 L180 145 C180 190 100 230 100 230 C100 230 20 190 20 145 L20 45 Z" fill="%231e3a8a" stroke="%23f59e0b" stroke-width="7"/><polygon points="100,35 106,52 124,52 109,63 115,80 100,70 85,80 91,63 76,52 94,52" fill="%23f59e0b"/><path d="M50 110 Q100 80 150 110 L140 170 Q100 200 60 170 Z" fill="%23059669"/><path d="M80 120 L120 120 L115 160 L85 160 Z" fill="%23ffffff"/><text x="100" y="145" font-family="sans-serif" font-weight="bold" font-size="12" fill="%231e3a8a" text-anchor="middle">PEMDA</text></svg>'
+    id: 'bulukumba',
+    title: 'Pemkab Bulukumba',
+    desc: 'Pemkab Bulukumba',
+    url: 'https://lh3.googleusercontent.com/d/1zvi7-kEEXWUqFdg9nuU0FYxfkNavBIBb',
+    fallbackUrl: 'https://drive.google.com/uc?export=view&id=1zvi7-kEEXWUqFdg9nuU0FYxfkNavBIBb'
   },
   {
-    id: 'kementerian',
-    title: 'Kementerian / Lembaga',
-    desc: 'Segel Bulat Hijau',
-    url: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" width="200" height="240"><circle cx="100" cy="120" r="95" fill="%23065f46" stroke="%23f59e0b" stroke-width="6"/><circle cx="100" cy="120" r="82" fill="%23047857"/><polygon points="100,50 107,70 128,70 111,83 117,103 100,90 83,103 89,83 72,70 93,70" fill="%23f59e0b"/><path d="M55 130 C70 110 130 110 145 130 L135 170 C120 180 80 180 65 170 Z" fill="%23ffffff"/><text x="100" y="155" font-family="sans-serif" font-weight="bold" font-size="11" fill="%23065f46" text-anchor="middle">INSTANSI</text></svg>'
+    id: 'kemenparekraf',
+    title: 'Kemenparekraf',
+    desc: 'Kemenparekraf / Baparekraf',
+    url: 'https://lh3.googleusercontent.com/d/1K1bpBEi7OLJIBzb1NApeaxEM_xmIYIot',
+    fallbackUrl: 'https://drive.google.com/uc?export=view&id=1K1bpBEi7OLJIBzb1NApeaxEM_xmIYIot'
   }
+];
+
+const DAFTAR_OPD = [
+  'BUPATI',
+  'SEKRETARIAT DAERAH',
+  'SEKRETARIAT DPRD',
+  'INSPEKTORAT DAERAH',
+  'BADAN PERENCANAAN PEMBANGUNAN, RISET DAN INOVASI DAERAH',
+  'BADAN KEPEGAWAIAN DAN PENGEMBANGAN SUMBER DAYA MANUSIA',
+  'BADAN PENGELOLA KEUANGAN DAN ASET DAERAH',
+  'BADAN PENDAPATAN DAERAH',
+  'BADAN PENANGGULANGAN BENCANA DAERAH',
+  'DINAS PEMBERDAYAAN MASYARAKAT DAN DESA',
+  'DINAS KEARSIPAN DAN PERPUSTAKAAN DAERAH',
+  'DINAS PENGENDALIAN PENDUDUK, KELUARGA BERENCANA, PEMBERDAYAAN PEREMPUAN DAN PERLINDUNGAN ANAK',
+  'DINAS PENANAMAN MODAL DAN PELAYANAN TERPADU SATU PINTU',
+  'DINAS KESEHATAN',
+  'DINAS PENDIDIKAN DAN KEBUDAYAAN',
+  'DINAS SOSIAL',
+  'DINAS PERHUBUNGAN',
+  'DINAS KOMUNIKASI INFORMATIKA DAN PERSANDIAN',
+  'DINAS KEPENDUDUKAN DAN PENCATATAN SIPIL',
+  'DINAS PEKERJAAN UMUM DAN TATA RUANG',
+  'DINAS PERUMAHAN KAWASAN PEMUKIMAN DAN PERTANAHAN',
+  'DINAS PARIWISATA PEMUDA DAN OLAHRAGA',
+  'DINAS PERDAGANGAN DAN PERINDUSTRIAN',
+  'DINAS KOPERASI UKM DAN TENAGA KERJA',
+  'DINAS PERTANIAN DAN KETAHANAN PANGAN',
+  'DINAS PERIKANAN',
+  'DINAS LINGKUNGAN HIDUP DAN KEHUTANAN',
+  'SATUAN POLISI PAMONG PRAJA PEMADAM KEBAKARAN DAN PENYELAMATAN',
+  'BADAN KESATUAN BANGSA DAN POLITIK',
+  'RSUD H.A. SULTAN DG RAJA'
 ];
 
 interface SettingsModalProps {
@@ -288,24 +325,65 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block font-bold text-slate-700 mb-1">Nama Induk Instansi / Pemerintah *</label>
-              <input
-                type="text"
-                value={form.namaInstansi}
-                onChange={(e) => handleChange('namaInstansi', e.target.value)}
-                required
-                className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg font-bold text-slate-900 focus:ring-2 focus:ring-blue-500"
-              />
+              <div className="space-y-2">
+                <select
+                  value={
+                    ['PEMERINTAH KABUPATEN BULUKUMBA', 'PEMERINTAH PROVINSI SULAWESI SELATAN', 'KEMENTERIAN PARIWISATA DAN EKONOMI KREATIF', 'KEMENTERIAN DALAM NEGERI', 'KEMENTERIAN AGAMA'].includes(form.namaInstansi)
+                      ? form.namaInstansi
+                      : 'PEMERINTAH KABUPATEN BULUKUMBA'
+                  }
+                  onChange={(e) => {
+                    if (e.target.value) {
+                      handleChange('namaInstansi', e.target.value);
+                    }
+                  }}
+                  className="w-full p-2.5 bg-white border border-slate-300 rounded-lg font-bold text-slate-900 focus:ring-2 focus:ring-blue-500 shadow-xs cursor-pointer"
+                >
+                  <option value="PEMERINTAH KABUPATEN BULUKUMBA">1. PEMERINTAH KABUPATEN BULUKUMBA (Default)</option>
+                  <option value="PEMERINTAH PROVINSI SULAWESI SELATAN">2. PEMERINTAH PROVINSI SULAWESI SELATAN</option>
+                  <option value="KEMENTERIAN PARIWISATA DAN EKONOMI KREATIF">3. KEMENTERIAN PARIWISATA DAN EKONOMI KREATIF</option>
+                  <option value="KEMENTERIAN DALAM NEGERI">4. KEMENTERIAN DALAM NEGERI</option>
+                  <option value="KEMENTERIAN AGAMA">5. KEMENTERIAN AGAMA</option>
+                </select>
+                <input
+                  type="text"
+                  value={form.namaInstansi}
+                  onChange={(e) => handleChange('namaInstansi', e.target.value)}
+                  required
+                  placeholder="Nama Induk Instansi / Pemerintah Daerah..."
+                  className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg font-bold text-slate-900 focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
             </div>
 
             <div>
               <label className="block font-bold text-slate-700 mb-1">Nama Dinas / Badan / OPD *</label>
-              <input
-                type="text"
-                value={form.subNama}
-                onChange={(e) => handleChange('subNama', e.target.value)}
-                required
-                className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg font-bold text-slate-900 focus:ring-2 focus:ring-blue-500"
-              />
+              <div className="space-y-2">
+                <select
+                  value={DAFTAR_OPD.includes(form.subNama) ? form.subNama : ''}
+                  onChange={(e) => {
+                    if (e.target.value) {
+                      handleChange('subNama', e.target.value);
+                    }
+                  }}
+                  className="w-full p-2.5 bg-white border border-slate-300 rounded-lg font-bold text-slate-900 focus:ring-2 focus:ring-blue-500 shadow-xs cursor-pointer"
+                >
+                  <option value="">-- Pilih dari Dropdown OPD ({DAFTAR_OPD.length} Pilihan) --</option>
+                  {DAFTAR_OPD.map((opd, idx) => (
+                    <option key={opd} value={opd}>
+                      {idx + 1}. {opd}
+                    </option>
+                  ))}
+                </select>
+                <input
+                  type="text"
+                  value={form.subNama}
+                  onChange={(e) => handleChange('subNama', e.target.value)}
+                  required
+                  placeholder="Atau sesuaikan/ketik Nama Dinas / Badan / OPD..."
+                  className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg font-bold text-slate-900 focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
             </div>
           </div>
 
@@ -372,33 +450,48 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
               
               {/* Preset Logos Selector */}
               <div>
-                <label className="block font-bold text-slate-700 mb-2">Pilih Lambang / Logo Bawaan Instansi:</label>
+                <label className="block font-bold text-slate-700 mb-2">Pilih Lambang / Logo Bawaan Instansi (Klik untuk Langsung Pasang):</label>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
                   {PRESET_LOGOS.map((preset) => {
-                    const isSelected = form.logoUrl === preset.url;
+                    const isSelected = form.logoUrl === preset.url || (preset.fallbackUrl && form.logoUrl === preset.fallbackUrl);
                     return (
                       <button
                         key={preset.id}
                         type="button"
                         onClick={() => handleChange('logoUrl', preset.url)}
-                        className={`p-2.5 rounded-xl border text-left flex flex-col items-center justify-center space-y-1.5 transition-all cursor-pointer ${
+                        className={`p-3 rounded-xl border text-left flex flex-col items-center justify-center space-y-2 transition-all cursor-pointer relative group ${
                           isSelected
-                            ? 'bg-blue-50 border-blue-600 ring-2 ring-blue-500/30 shadow-xs'
-                            : 'bg-white border-slate-200 hover:border-slate-300 hover:bg-slate-100/80'
+                            ? 'bg-blue-50 border-blue-600 ring-2 ring-blue-500/40 shadow-sm'
+                            : 'bg-white border-slate-200 hover:border-blue-400 hover:bg-slate-100/90'
                         }`}
                       >
-                        <div className="w-10 h-10 flex items-center justify-center p-0.5">
+                        {isSelected && (
+                          <div className="absolute top-1.5 right-1.5 bg-blue-600 text-white rounded-full p-0.5 shadow-xs">
+                            <Check className="w-3.5 h-3.5 stroke-[3]" />
+                          </div>
+                        )}
+                        <div className="w-12 h-12 flex items-center justify-center p-1 bg-white rounded-lg border border-slate-100 shadow-xs">
                           <img
                             src={preset.url}
                             alt={preset.title}
                             className="max-w-full max-h-full object-contain"
+                            onError={(e) => {
+                              if (preset.fallbackUrl) {
+                                (e.target as HTMLImageElement).src = preset.fallbackUrl;
+                              }
+                            }}
                           />
                         </div>
                         <div className="text-center">
                           <p className={`text-[11px] font-bold ${isSelected ? 'text-blue-900' : 'text-slate-800'}`}>
                             {preset.title}
                           </p>
-                          <p className="text-[9px] text-slate-500">{preset.desc}</p>
+                          <p className="text-[9px] text-slate-500 leading-tight mt-0.5">{preset.desc}</p>
+                          <span className={`inline-block mt-1 px-1.5 py-0.5 rounded text-[9px] font-semibold ${
+                            isSelected ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-600 group-hover:bg-blue-100 group-hover:text-blue-700'
+                          }`}>
+                            {isSelected ? '✓ Terpasang' : 'Klik Pasang'}
+                          </span>
                         </div>
                       </button>
                     );
