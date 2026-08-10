@@ -73,17 +73,17 @@ export const UserManagementView: React.FC<UserManagementViewProps> = ({
     }, 3500);
   };
 
-  // Explicit Manual Save action
+  // Explicit Manual Save action directly to Firebase Firestore
   const handleSaveAllUsers = async () => {
     setIsSyncing(true);
     try {
-      localStorage.setItem('sim_surat_users', JSON.stringify(userAccounts));
       if (onSyncAllUsers) {
         await onSyncAllUsers(userAccounts);
       }
-      triggerToast('Data seluruh pengguna berhasil disimpan & disinkronkan ke Cloud Firestore / seluruh perangkat!');
+      triggerToast('Data seluruh pengguna berhasil disimpan & disinkronkan ke Firebase Firestore!');
     } catch (e) {
-      triggerToast('Data berhasil disimpan secara lokal.');
+      console.error('Save users error:', e);
+      triggerToast('Gagal menyimpan ke Firestore. Periksa koneksi internet Anda.');
     } finally {
       setIsSyncing(false);
     }

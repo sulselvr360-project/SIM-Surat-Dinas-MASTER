@@ -50,24 +50,8 @@ import { ArsipBukuAgenda } from './components/ArsipBukuAgenda';
 import { SettingsModal } from './components/SettingsModal';
 
 export function App() {
-  // Local auth state
-  const [userAccounts, setUserAccounts] = useState<UserAccount[]>(() => {
-    const saved = localStorage.getItem('sim_surat_users');
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          const userMap = new Map<string, UserAccount>();
-          initialUserAccounts.forEach((u) => userMap.set(u.id, u));
-          parsed.forEach((u: UserAccount) => userMap.set(u.id, u));
-          return Array.from(userMap.values());
-        }
-      } catch (e) {
-        console.error('Error parsing sim_surat_users:', e);
-      }
-    }
-    return initialUserAccounts;
-  });
+  // Local auth state (synced with Firebase Firestore in real-time)
+  const [userAccounts, setUserAccounts] = useState<UserAccount[]>(initialUserAccounts);
 
   const [currentUser, setCurrentUser] = useState<UserAccount | null>(() => {
     const saved = localStorage.getItem('sim_surat_current_user');
@@ -251,7 +235,7 @@ export function App() {
       console.warn('Firestore listener kodeKlasifikasi info:', err);
     });
 
-    // 4. Listen Users in Real-Time
+    // 4. Listen Users in Real-Time from Firestore
     const unsubUsers = onSnapshot(collection(db, 'users'), (snapshot) => {
       if (!snapshot.empty) {
         const items: UserAccount[] = [];
@@ -263,17 +247,15 @@ export function App() {
         });
         if (items.length > 0) {
           setUserAccounts(items);
-          localStorage.setItem('sim_surat_users', JSON.stringify(items));
         }
       } else {
-        // If snapshot is empty, seed initial 4 default users to Firestore
+        // If snapshot is empty, seed initial 4 default users directly to Firestore
         const batch = writeBatch(db);
         initialUserAccounts.forEach((u) => {
           batch.set(doc(db, 'users', u.id), u);
         });
-        batch.commit().catch((err) => console.error('Error seeding initial users:', err));
+        batch.commit().catch((err) => console.error('Error seeding initial users to Firestore:', err));
         setUserAccounts(initialUserAccounts);
-        localStorage.setItem('sim_surat_users', JSON.stringify(initialUserAccounts));
       }
     }, (err) => {
       console.warn('Firestore listener users info:', err);
@@ -351,7 +333,7 @@ export function App() {
     setCurrentUser(null);
   };
 
-  // User Management Handlers (Superadmin Only)
+  // User Management Handlers (Superadmin Only - Saved Directly to Firebase Firestore)
   const handleSyncAllUsersToFirestore = async (usersToSync?: UserAccount[]) => {
     const list = usersToSync || userAccounts;
     if (!list || list.length === 0) return;
@@ -360,8 +342,9 @@ export function App() {
       list.forEach((u) => {
         batch.set(doc(db, 'users', u.id), u);
       });
+
       await batch.commit();
-      console.log('All users successfully synced to Firestore');
+      console.log('All users committed and synced to Cloud Firestore successfully');
     } catch (err) {
       console.error('Error syncing all users to Firestore:', err);
       throw err;
@@ -373,9 +356,7 @@ export function App() {
       ...newUser,
       id: `usr-${Date.now()}`,
     };
-    const updatedList = [...userAccounts, created];
-    setUserAccounts(updatedList);
-    localStorage.setItem('sim_surat_users', JSON.stringify(updatedList));
+    setUserAccounts((prev) => [...prev.filter((u) => u.id !== created.id), created]);
     try {
       await setDoc(doc(db, 'users', created.id), created);
     } catch (err) {
@@ -387,12 +368,11 @@ export function App() {
     const existing = userAccounts.find((u) => u.id === id);
     if (!existing) return;
     const updated = { ...existing, ...updatedData };
-    const updatedList = userAccounts.map((u) => (u.id === id ? updated : u));
-    setUserAccounts(updatedList);
-    localStorage.setItem('sim_surat_users', JSON.stringify(updatedList));
+    setUserAccounts((prev) => prev.map((u) => (u.id === id ? updated : u)));
 
     if (currentUser && currentUser.id === id) {
       setCurrentUser(updated);
+      localStorage.setItem('sim_surat_current_user', JSON.stringify(updated));
     }
 
     try {
@@ -403,9 +383,7 @@ export function App() {
   };
 
   const handleDeleteUser = async (id: string) => {
-    const updatedList = userAccounts.filter((u) => u.id !== id);
-    setUserAccounts(updatedList);
-    localStorage.setItem('sim_surat_users', JSON.stringify(updatedList));
+    setUserAccounts((prev) => prev.filter((u) => u.id !== id));
     try {
       await deleteDoc(doc(db, 'users', id));
     } catch (err) {
@@ -414,7 +392,7 @@ export function App() {
   };
 
   const handleResetUsers = async () => {
-    if (window.confirm('Apakah Anda yakin ingin mengembalikan daftar pengguna ke 4 akun default bawaan sistem?')) {
+    if (window.confirm('Apakah Anda yakin ingin mengembalikan daftar pengguna ke 4 akun default bawaan sistem di Firebase Firestore?')) {
       try {
         const uSnap = await getDocs(collection(db, 'users'));
         const batch = writeBatch(db);
@@ -426,12 +404,10 @@ export function App() {
         });
         await batch.commit();
         setUserAccounts(initialUserAccounts);
-        localStorage.setItem('sim_surat_users', JSON.stringify(initialUserAccounts));
-        alert('Semua akun pengguna berhasil di-reset ke 4 akun default dan disinkronkan ke Cloud Firestore.');
+        alert('Semua akun pengguna berhasil di-reset ke 4 akun default di Cloud Firestore.');
       } catch (err) {
         console.error('Error resetting users:', err);
-        setUserAccounts(initialUserAccounts);
-        localStorage.setItem('sim_surat_users', JSON.stringify(initialUserAccounts));
+        alert('Gagal mere-set data pengguna di Firestore.');
       }
     }
   };
