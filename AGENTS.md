@@ -1,7 +1,23 @@
 # AGENTS.md — SIMSURAT App Blueprint & Guidelines
 
 ## Overview
-Aplikasi Sistem Informasi Manajemen Surat & Disposisi Resmi (SIMSURAT).
+Aplikasi Sistem Informasi Manajemen Surat & Disposisi Resmi (SIMSURAT) — **Versi Master (Master Blueprint Application)**.
+
+---
+
+## ⚠️ PENTING: ATURAN DUPLIKASI / REMIX APLIKASI MASA DEPAN
+
+Apabila aplikasi ini **diremix**, **diduplikasi**, atau **di-fork** di masa mendatang oleh pengembang manapun, wajib mengikuti prosedur berikut sebelum melakukan deployment:
+
+1. **Database Tersendiri di Firebase**:
+   - **SEBELUM DEPLOY**, pengembang WAJIB membuat dan mengonfigurasi **database tersendiri** di proyek Firebase baru khusus untuk aplikasi hasil duplikat tersebut.
+   - **DILARANG BENGKOK / MENGGUNAKAN** database master agar data antar instansi/aplikasi hasil duplikat tidak saling bentrok atau bercampur.
+
+2. **Akses & Otorisasi Google Drive**:
+   - Pengembang WAJIB mengarahkan pengguna/admin untuk **langsung memberikan otorisasi akses ke Google Drive** saat pertama kali aplikasi dijalankan.
+   - Hal ini memastikan fitur **Sinkronisasi Otomatis Google Drive** & cadangan berkas langsung terhubung secara aman ke penyimpanan Google Drive pribadi instansi.
+
+---
 
 ## Key Architecture & Business Rules
 

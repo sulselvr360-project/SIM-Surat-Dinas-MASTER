@@ -66,9 +66,12 @@ export const Dashboard: React.FC<DashboardProps> = ({
         <div className="absolute -right-10 -bottom-10 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
         <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div>
-            <div className="flex items-center space-x-2 text-blue-200 text-xs font-semibold uppercase tracking-wider mb-1">
+            <div className="flex items-center space-x-2 text-blue-200 text-xs font-semibold uppercase tracking-wider mb-1 flex-wrap gap-y-1">
               <Calendar className="w-3.5 h-3.5" />
               <span>Sistem Manajemen Tata Naskah Dinas & Disposisi</span>
+              <span className="px-2 py-0.5 bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[10px] rounded-full font-bold uppercase tracking-normal">
+                👑 Versi Master (Paten)
+              </span>
             </div>
             <h1 className="text-xl sm:text-2xl font-bold tracking-tight flex items-center space-x-2">
               <span>Selamat Datang, {currentUser?.name || 'Pengguna Aplikasi'}</span>
@@ -102,6 +105,42 @@ export const Dashboard: React.FC<DashboardProps> = ({
                 <span>Modus User (Pelihat / Read-Only)</span>
               </div>
             )}
+          </div>
+        </div>
+      </div>
+
+      {/* Developer Master Notice & Remix Instructions */}
+      <div className="bg-slate-900 text-white rounded-xl p-4 border border-slate-800 shadow-md text-xs space-y-2">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span className="font-bold text-slate-200">Petunjuk Pengembang & Integrasi Sistem (Master Application)</span>
+          </div>
+          <button
+            onClick={() => {
+              setActiveTab('pengaturan');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className="text-[11px] text-blue-400 hover:underline font-semibold"
+          >
+            Kelola Pengaturan & Google Drive →
+          </button>
+        </div>
+        <p className="text-slate-300 text-[11px] leading-relaxed">
+          Sistem ini berjalan pada mode <strong className="text-amber-300">Aplikasi Master SIMSURAT</strong>. Bagi pengembang yang akan melakukan <strong className="text-white">remix / duplikasi project</strong> di masa mendatang:
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-[11px]">
+          <div className="p-2.5 bg-slate-800/80 rounded-lg border border-slate-700/60 flex items-start space-x-2">
+            <span className="text-blue-400 font-bold shrink-0">1.</span>
+            <span className="text-slate-300">
+              <strong>Database Tersendiri:</strong> Sebelum deploy, pengembang wajib membuatkan database Firebase tersendiri untuk versi duplikat agar data persuratan terisolasi.
+            </span>
+          </div>
+          <div className="p-2.5 bg-slate-800/80 rounded-lg border border-slate-700/60 flex items-start space-x-2">
+            <span className="text-emerald-400 font-bold shrink-0">2.</span>
+            <span className="text-slate-300">
+              <strong>Otorisasi Google Drive:</strong> Pengguna langsung diarahkan memberikan akses Google Drive untuk sinkronisasi otomatis naskah dan cadangan.
+            </span>
           </div>
         </div>
       </div>

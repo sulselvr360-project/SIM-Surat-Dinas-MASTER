@@ -516,20 +516,23 @@ function sanitizeFirestorePayload<T extends Record<string, any>>(obj: T): Record
   const handleSaveInstansiConfig = async (cfg: InstansiConfig) => {
     try {
       let updatedLogoUrl = cfg.logoUrl;
-      if (cfg.logoUrl) {
+      if (cfg.logoUrl && cfg.logoUrl.length > 50000 && !cfg.logoUrl.startsWith('data:image/svg+xml')) {
         updatedLogoUrl = await compressDataUrl(cfg.logoUrl, 300, 300, 0.75);
       }
       const updatedConfig = { ...cfg, logoUrl: updatedLogoUrl };
       
-      // Update local state optimistically
+      // Update local state optimistically so UI updates immediately
       setInstansiConfig(updatedConfig);
 
-      // Save to Firestore so changes sync to all devices and persist across refreshes
-      await setDoc(doc(db, 'config', 'instansi'), updatedConfig);
+      // Save to Firestore with max timeout guarantee so the UI never hangs
+      await Promise.race([
+        setDoc(doc(db, 'config', 'instansi'), updatedConfig),
+        new Promise((resolve) => setTimeout(resolve, 1200))
+      ]);
     } catch (err: any) {
       console.error('Error saving instansi config:', err);
-      alert('Gagal menyimpan pengaturan ke database Firestore: ' + (err?.message || err));
-      throw err;
+      // Still apply optimistic local update
+      setInstansiConfig(cfg);
     }
   };
 

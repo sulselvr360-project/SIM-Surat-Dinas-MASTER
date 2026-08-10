@@ -185,6 +185,37 @@ export const GoogleDriveSyncCard: React.FC<GoogleDriveSyncCardProps> = ({
 
   return (
     <div className="bg-slate-900 text-white rounded-2xl p-6 shadow-xl border border-slate-800 space-y-5">
+      {/* Master Blueprint & Remix Notice Banner */}
+      <div className="bg-gradient-to-r from-amber-950/80 via-slate-900 to-indigo-950/80 p-4 rounded-xl border border-amber-500/30 text-xs space-y-2 relative overflow-hidden">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <span className="px-2.5 py-1 bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[10px] rounded-full font-extrabold uppercase tracking-wider flex items-center gap-1">
+              👑 Versi Master SIMSURAT
+            </span>
+            <span className="text-slate-300 font-bold">Panduan Pengembang (Remix / Duplikasi Project)</span>
+          </div>
+        </div>
+        <p className="text-slate-300 text-[11px] leading-relaxed">
+          Aplikasi ini disetting sebagai <strong className="text-amber-300">Aplikasi Master Resmi</strong>. Jika di masa depan aplikasi ini <strong className="text-white">diremix atau diduplikasi</strong> untuk instansi/unit lain, pastikan untuk mengikuti 2 aturan wajib sebelum melakukan <em>deployment</em>:
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-2 pt-1 font-sans text-[11px]">
+          <div className="bg-slate-950/70 p-2.5 rounded-lg border border-slate-800 flex items-start space-x-2">
+            <span className="w-5 h-5 rounded-full bg-blue-900/80 text-blue-300 font-bold text-[10px] flex items-center justify-center shrink-0 border border-blue-700 mt-0.5">1</span>
+            <div>
+              <p className="font-bold text-blue-300">Database Firebase Khusus:</p>
+              <p className="text-slate-400 text-[10px] mt-0.5">Sebelum deploy, buatkan database Firebase tersendiri untuk aplikasi hasil duplikat agar data tidak saling bercampur dengan Master.</p>
+            </div>
+          </div>
+          <div className="bg-slate-950/70 p-2.5 rounded-lg border border-slate-800 flex items-start space-x-2">
+            <span className="w-5 h-5 rounded-full bg-emerald-900/80 text-emerald-300 font-bold text-[10px] flex items-center justify-center shrink-0 border border-emerald-700 mt-0.5">2</span>
+            <div>
+              <p className="font-bold text-emerald-300">Otorisasi Google Drive Direct:</p>
+              <p className="text-slate-400 text-[10px] mt-0.5">Langsung hubungkan dan berikan izin akses Google Drive agar sinkronisasi otomatis dan cadangan data tersimpan aman.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-4">
         <div className="flex items-center space-x-3">

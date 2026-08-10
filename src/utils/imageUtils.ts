@@ -20,44 +20,77 @@ export async function compressImageFile(
   }
 
   return new Promise((resolve, reject) => {
+    let handled = false;
+    const timeoutId = setTimeout(() => {
+      if (!handled) {
+        handled = true;
+        resolve('');
+      }
+    }, 3000);
+
     const reader = new FileReader();
     reader.onload = (e) => {
+      const result = e.target?.result as string;
+      if (!result) {
+        if (!handled) {
+          handled = true;
+          clearTimeout(timeoutId);
+          resolve('');
+        }
+        return;
+      }
+
       const img = new Image();
       img.onload = () => {
-        const canvas = document.createElement('canvas');
-        let width = img.width || maxWidth;
-        let height = img.height || maxHeight;
+        if (handled) return;
+        handled = true;
+        clearTimeout(timeoutId);
+        try {
+          const canvas = document.createElement('canvas');
+          let width = img.width || maxWidth;
+          let height = img.height || maxHeight;
 
-        if (width > maxWidth || height > maxHeight) {
-          if (width / height > maxWidth / maxHeight) {
-            height = Math.round((height * maxWidth) / width);
-            width = maxWidth;
-          } else {
-            width = Math.round((width * maxHeight) / height);
-            height = maxHeight;
+          if (width > maxWidth || height > maxHeight) {
+            if (width / height > maxWidth / maxHeight) {
+              height = Math.round((height * maxWidth) / width);
+              width = maxWidth;
+            } else {
+              width = Math.round((width * maxHeight) / height);
+              height = maxHeight;
+            }
           }
-        }
 
-        canvas.width = Math.max(width, 1);
-        canvas.height = Math.max(height, 1);
-        const ctx = canvas.getContext('2d');
-        if (!ctx) {
-          resolve((e.target?.result as string).slice(0, 300000));
-          return;
-        }
+          canvas.width = Math.max(width, 1);
+          canvas.height = Math.max(height, 1);
+          const ctx = canvas.getContext('2d');
+          if (!ctx) {
+            resolve(result.slice(0, 300000));
+            return;
+          }
 
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-        const compressed = canvas.toDataURL('image/jpeg', quality);
-        resolve(compressed);
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          const compressed = canvas.toDataURL('image/jpeg', quality);
+          resolve(compressed);
+        } catch {
+          resolve(result.slice(0, 300000));
+        }
       };
       img.onerror = () => {
-        // Fallback
-        const result = e.target?.result as string;
-        resolve(result ? result.slice(0, 300000) : '');
+        if (!handled) {
+          handled = true;
+          clearTimeout(timeoutId);
+          resolve(result.slice(0, 300000));
+        }
       };
-      img.src = e.target?.result as string;
+      img.src = result;
     };
-    reader.onerror = reject;
+    reader.onerror = (err) => {
+      if (!handled) {
+        handled = true;
+        clearTimeout(timeoutId);
+        reject(err);
+      }
+    };
     reader.readAsDataURL(file);
   });
 }
@@ -78,49 +111,67 @@ export async function compressDataUrl(
   // If it's a lightweight vector SVG without large embedded base64 image data
   if (
     dataUrl.startsWith('data:image/svg+xml') &&
-    dataUrl.length < 100000 &&
     !dataUrl.includes('base64,')
   ) {
     return dataUrl;
   }
 
-  // If string length is already very small (< 50KB), safe for Firestore
+  // If string length is already small (< 50KB), safe for Firestore
   if (dataUrl.length < 50000) {
     return dataUrl;
   }
 
   return new Promise((resolve) => {
+    let handled = false;
+    const timeoutId = setTimeout(() => {
+      if (!handled) {
+        handled = true;
+        resolve(dataUrl.slice(0, 300000));
+      }
+    }, 1500);
+
     const img = new Image();
     img.crossOrigin = 'anonymous';
     img.onload = () => {
-      const canvas = document.createElement('canvas');
-      let width = img.width || maxWidth;
-      let height = img.height || maxHeight;
+      if (handled) return;
+      handled = true;
+      clearTimeout(timeoutId);
+      try {
+        const canvas = document.createElement('canvas');
+        let width = img.width || maxWidth;
+        let height = img.height || maxHeight;
 
-      if (width > maxWidth || height > maxHeight) {
-        if (width / height > maxWidth / maxHeight) {
-          height = Math.round((height * maxWidth) / width);
-          width = maxWidth;
-        } else {
-          width = Math.round((width * maxHeight) / height);
-          height = maxHeight;
+        if (width > maxWidth || height > maxHeight) {
+          if (width / height > maxWidth / maxHeight) {
+            height = Math.round((height * maxWidth) / width);
+            width = maxWidth;
+          } else {
+            width = Math.round((width * maxHeight) / height);
+            height = maxHeight;
+          }
         }
-      }
 
-      canvas.width = Math.max(width, 1);
-      canvas.height = Math.max(height, 1);
-      const ctx = canvas.getContext('2d');
-      if (!ctx) {
+        canvas.width = Math.max(width, 1);
+        canvas.height = Math.max(height, 1);
+        const ctx = canvas.getContext('2d');
+        if (!ctx) {
+          resolve(dataUrl.slice(0, 300000));
+          return;
+        }
+
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        const compressed = canvas.toDataURL('image/jpeg', quality);
+        resolve(compressed);
+      } catch {
         resolve(dataUrl.slice(0, 300000));
-        return;
       }
-
-      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-      const compressed = canvas.toDataURL('image/jpeg', quality);
-      resolve(compressed);
     };
     img.onerror = () => {
-      resolve(dataUrl.slice(0, 300000));
+      if (!handled) {
+        handled = true;
+        clearTimeout(timeoutId);
+        resolve(dataUrl.slice(0, 300000));
+      }
     };
     img.src = dataUrl;
   });
