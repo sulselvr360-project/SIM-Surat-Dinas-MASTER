@@ -5,6 +5,15 @@ Aplikasi Sistem Informasi Manajemen Surat & Disposisi Resmi (SIMSURAT) — **Ver
 
 ---
 
+## 🔒 MASTER CONFIGURATION & DATABASE CONNECTIVITY
+
+- **Active Firebase Project**: `sim-surat-dinas-master-true`
+- **Real-Time Data Sync**: Firebase Firestore (`suratMasuk`, `suratKeluar`, `users`, `kodeKlasifikasi`, `config/instansi`)
+- **Google Drive Integration**: Direct OAuth & automatic backup sync for document attachments
+- **Authentication Engine**: Direct Firebase Real-time listeners with live user account synchronization
+
+---
+
 ## ⚠️ PENTING: ATURAN DUPLIKASI / REMIX APLIKASI MASA DEPAN
 
 Apabila aplikasi ini **diremix**, **diduplikasi**, atau **di-fork** di masa mendatang oleh pengembang manapun, wajib mengikuti prosedur berikut sebelum melakukan deployment:
@@ -38,7 +47,7 @@ Apabila aplikasi ini **diremix**, **diduplikasi**, atau **di-fork** di masa mend
 2. **Persistence & Firestore Database**:
    - Firestore database collection paths: `suratMasuk`, `suratKeluar`, `users`, `config/instansi`, `config/seed_marker`.
    - Seed marker (`config/seed_marker`) prevents auto-re-seeding deleted records upon browser refresh.
-   - Optimistic state updates on deletion paired with Firestore `deleteDoc` API.
+   - Real-time snapshot synchronization (`onSnapshot`) active across all clients.
 
 3. **UI / Styling Conventions**:
    - Clean, professional Tailwind CSS design with high contrast, elegant status badges, and official document preview layouts.
@@ -65,3 +74,4 @@ Apabila aplikasi ini **diremix**, **diduplikasi**, atau **di-fork** di masa mend
      *_Catatan / Petunjuk Khusus Pimpinan_* : _..._
      =============
      ```
+
