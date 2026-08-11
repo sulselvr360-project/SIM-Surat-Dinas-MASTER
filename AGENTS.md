@@ -1,13 +1,25 @@
-# AGENTS.md — SIMSURAT App Blueprint & Guidelines
+# AGENTS.md — E-SuratPro App Blueprint & Guidelines
 
 ## Overview
-Aplikasi Sistem Informasi Manajemen Surat & Disposisi Resmi (SIMSURAT) — **Versi Master (Master Blueprint Application)**.
+Aplikasi Sistem Informasi Manajemen Surat & Disposisi Resmi (**E-SuratPro**) — **Versi Master (Master Blueprint Application)**.
 
 ---
 
 ## 🔒 MASTER CONFIGURATION & DATABASE CONNECTIVITY
 
 - **Active Firebase Project**: `sim-surat-dinas-master-true`
+- **Default Superadmin User**: `Ubayd Mantsur` (Super Administrator / Kasubag TI)
+- **Firebase Web Config**:
+  ```json
+  {
+    "apiKey": "AIzaSyBsf3hXZeC_VGYX8eiY5baau3fcTyNoasw",
+    "authDomain": "sim-surat-dinas-master-true.firebaseapp.com",
+    "projectId": "sim-surat-dinas-master-true",
+    "storageBucket": "sim-surat-dinas-master-true.firebasestorage.app",
+    "messagingSenderId": "82145406841",
+    "appId": "1:82145406841:web:26d1b2ad79581cb48809a8"
+  }
+  ```
 - **Real-Time Data Sync**: Firebase Firestore (`suratMasuk`, `suratKeluar`, `users`, `kodeKlasifikasi`, `config/instansi`)
 - **Google Drive Integration**: Direct OAuth & automatic backup sync for document attachments
 - **Authentication Engine**: Direct Firebase Real-time listeners with live user account synchronization
@@ -65,7 +77,7 @@ Apabila aplikasi ini **diremix**, **diduplikasi**, atau **di-fork** di masa mend
      *_Perihal_* : _..._
      ============
      *_Uraian singkat_* : 
-     _..._
+     ...
      ============
      *_Disposisi Kepada_* : _..._
      =============
@@ -73,5 +85,11 @@ Apabila aplikasi ini **diremix**, **diduplikasi**, atau **di-fork** di masa mend
 
      *_Catatan / Petunjuk Khusus Pimpinan_* : _..._
      =============
+
+     _Akses Dokumen : https://bit.ly/4bIVRLB_
+     _Username : user_
+     _Password : user_
+
+     _made by : E-Surat Pro 2026_
      ```
 

@@ -66,14 +66,20 @@ export function formatSuratMasukCopyText(surat: SuratMasuk): string {
 *_Perihal_* : _${surat.perihal || '-'}_
 ============
 *_Uraian singkat_* : 
-_${surat.isiRingkasan || '-'}_
+${surat.isiRingkasan || '-'}
 ============
 *_Disposisi Kepada_* : _${disposisiKeStr}_
 =============
 *_Petunjuk/Arahan_* : _${petunjukStr}_
 
 *_Catatan / Petunjuk Khusus Pimpinan_* : _${catatanStr}_
-=============`;
+=============
+
+_Akses Dokumen : https://bit.ly/4bIVRLB_
+_Username : user_
+_Password : user_
+
+_made by : E-Surat Pro 2026_`;
 }
 
 /**

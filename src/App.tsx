@@ -64,21 +64,7 @@ export function App() {
     return initialUserAccounts;
   });
 
-  const [currentUser, setCurrentUser] = useState<UserAccount | null>(() => {
-    const saved = localStorage.getItem('sim_surat_current_user');
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        if (parsed.username === 'superadmin' && parsed.name.includes('Budi Santoso')) {
-          parsed.name = 'Ubayd Mantsur';
-        }
-        return parsed;
-      } catch (e) {
-        // fallback
-      }
-    }
-    return initialUserAccounts[0];
-  });
+  const [currentUser, setCurrentUser] = useState<UserAccount | null>(null);
 
   // Main data collections state
   const [suratMasukList, setSuratMasukList] = useState<SuratMasuk[]>(() => {
@@ -370,6 +356,7 @@ export function App() {
   };
 
   const handleLogout = () => {
+    localStorage.removeItem('sim_surat_current_user');
     setCurrentUser(null);
   };
 

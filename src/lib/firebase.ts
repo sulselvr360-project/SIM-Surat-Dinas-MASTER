@@ -34,7 +34,7 @@ const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 let dbInstance;
 try {
   const settings = { 
-    experimentalAutoDetectLongPolling: true
+    experimentalForceLongPolling: true
   };
   if (databaseId && databaseId !== '(default)') {
     dbInstance = initializeFirestore(app, settings, databaseId);
