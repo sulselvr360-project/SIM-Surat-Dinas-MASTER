@@ -234,7 +234,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
 
         <div className="text-[10px] text-slate-400 text-center">
-          SurDin v1.0 | Multi-User Role
+          E-SuratPro v1.0 | Multi-User Role
         </div>
       </div>
     </aside>

@@ -30,10 +30,12 @@ const databaseId = import.meta.env.VITE_FIREBASE_DATABASE_ID || firebaseAppletCo
 // Initialize Firebase App
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 
-// CRITICAL: Ensure named database is passed if specified in config, and use auto-detect long polling for iframe compatibility
+// CRITICAL: Ensure named database is passed if specified in config, and auto-detect long polling for iframe compatibility
 let dbInstance;
 try {
-  const settings = { experimentalAutoDetectLongPolling: true };
+  const settings = { 
+    experimentalAutoDetectLongPolling: true
+  };
   if (databaseId && databaseId !== '(default)') {
     dbInstance = initializeFirestore(app, settings, databaseId);
   } else {

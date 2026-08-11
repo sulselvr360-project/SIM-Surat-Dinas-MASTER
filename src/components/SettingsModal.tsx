@@ -886,38 +886,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
           </div>
         </div>
 
-        {/* BARU: Informasi Status Aplikasi Master & Petunjuk Duplikasi (Remix Guide) */}
-        <div>
-          <h2 className="text-sm font-bold text-slate-900 border-b border-slate-200 pb-2 mb-4 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <ShieldAlert className="w-4 h-4 text-amber-600" />
-              <span>6. Informasi Status Aplikasi Master & Petunjuk Duplikasi (Remix Guide)</span>
-            </div>
-            <span className="px-2.5 py-0.5 bg-amber-100 text-amber-800 border border-amber-300 rounded-full font-bold text-[10px]">
-              Aplikasi Master Dipatenkan
-            </span>
-          </h2>
 
-          <div className="bg-slate-900 text-white p-5 rounded-xl border border-slate-800 space-y-3">
-            <p className="text-xs text-slate-300 leading-relaxed">
-              Ini adalah <strong className="text-amber-300">Aplikasi Master SIMSURAT</strong>. Seluruh desain antarmuka, struktur data, format penomoran, dan alur disposisi telah dibakukan.
-            </p>
-
-            <div className="bg-slate-800/90 p-3.5 rounded-lg border border-slate-700/80 space-y-2">
-              <p className="font-bold text-amber-400 text-xs flex items-center gap-1.5">
-                <span>⚠️ Petunjuk Pengembang Sebelum Melakukan Deployment Hasil Remix / Duplikasi:</span>
-              </p>
-              <ul className="space-y-2 text-slate-300 text-[11px] list-disc list-inside leading-relaxed">
-                <li>
-                  <strong className="text-blue-300">Membuat Database Tersendiri di Firebase:</strong> Sebelum melakukan deploy pada versi remix/duplikat, pastikan pengembang membuat proyek dan database Firestore baru di Firebase khusus untuk aplikasi tersebut agar data antar instansi tidak saling terganggu.
-                </li>
-                <li>
-                  <strong className="text-emerald-300">Otorisasi Langsung Google Drive:</strong> Pengembang wajib mengarahkan pengguna/admin untuk langsung menghubungkan dan memberikan izin otorisasi Google Drive pada menu Sinkronisasi agar fitur cadangan naskah otomatis aktif.
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
 
         {/* Submit & Cancel Buttons */}
         <div className="pt-4 border-t border-slate-200 flex items-center justify-between">

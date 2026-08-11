@@ -83,7 +83,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
           )}
           <div>
             <h2 className="font-extrabold text-white text-base sm:text-lg tracking-tight">
-              SurDin
+              E-SuratPro
             </h2>
             <p className="text-xs text-slate-400 truncate max-w-[200px] sm:max-w-md">
               {instansiConfig.namaInstansi}
@@ -185,7 +185,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
 
       {/* Footer */}
       <footer className="p-4 border-t border-slate-800 text-center text-xs text-slate-500 relative z-10">
-        <p>© 2026 SurDin v1.0 - {instansiConfig.subNama || instansiConfig.namaInstansi}</p>
+        <p>© 2026 E-SuratPro v1.0 - {instansiConfig.subNama || instansiConfig.namaInstansi}</p>
       </footer>
 
     </div>

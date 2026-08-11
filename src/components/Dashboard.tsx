@@ -74,7 +74,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
               </span>
             </div>
             <h1 className="text-xl sm:text-2xl font-bold tracking-tight flex items-center space-x-2">
-              <span>Selamat Datang, {currentUser?.name || 'Pengguna Aplikasi'}</span>
+              <span>Selamat Datang, {currentUser?.name || 'Ubayd Mantsur'}</span>
             </h1>
             <p className="text-xs text-slate-300 mt-1 max-w-2xl">
               Level Akses: <span className="font-bold text-yellow-300 uppercase">{userRole}</span> — {currentUser?.jabatan || 'Sistem Agenda Persuratan Instansi'}.

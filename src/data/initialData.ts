@@ -201,7 +201,7 @@ export const initialUserAccounts: UserAccount[] = [
   {
     id: 'usr-1',
     username: 'superadmin',
-    name: 'Budi Santoso, S.Kom, M.T.',
+    name: 'Ubayd Mantsur',
     jabatan: 'Super Administrator / Kasubag TI',
     role: 'superadmin',
     password: 'admin',

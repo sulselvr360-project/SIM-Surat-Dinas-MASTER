@@ -151,7 +151,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <div>
                 <div className="flex items-center space-x-2">
                   <span className="font-extrabold text-slate-900 tracking-tight text-base sm:text-lg group-hover:text-blue-700 transition-colors">
-                    SurDin
+                    E-SuratPro
                   </span>
                   <span className="text-[10px] bg-blue-100 text-blue-800 font-extrabold px-2 py-0.5 rounded-full border border-blue-200">
                     v1.0

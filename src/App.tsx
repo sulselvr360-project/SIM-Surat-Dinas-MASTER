@@ -51,11 +51,33 @@ import { SettingsModal } from './components/SettingsModal';
 
 export function App() {
   // Local auth state (synced with Firebase Firestore in real-time)
-  const [userAccounts, setUserAccounts] = useState<UserAccount[]>(initialUserAccounts);
+  const [userAccounts, setUserAccounts] = useState<UserAccount[]>(() => {
+    const saved = localStorage.getItem('sim_surat_users');
+    if (saved) {
+      try {
+        const parsed: UserAccount[] = JSON.parse(saved);
+        return parsed.map(u => u.username === 'superadmin' && u.name.includes('Budi Santoso') ? { ...u, name: 'Ubayd Mantsur' } : u);
+      } catch (e) {
+        // fallback
+      }
+    }
+    return initialUserAccounts;
+  });
 
   const [currentUser, setCurrentUser] = useState<UserAccount | null>(() => {
     const saved = localStorage.getItem('sim_surat_current_user');
-    return saved ? JSON.parse(saved) : null;
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (parsed.username === 'superadmin' && parsed.name.includes('Budi Santoso')) {
+          parsed.name = 'Ubayd Mantsur';
+        }
+        return parsed;
+      } catch (e) {
+        // fallback
+      }
+    }
+    return initialUserAccounts[0];
   });
 
   // Main data collections state
