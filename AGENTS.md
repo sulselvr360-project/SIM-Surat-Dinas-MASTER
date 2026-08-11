@@ -86,7 +86,7 @@ Apabila aplikasi ini **diremix**, **diduplikasi**, atau **di-fork** di masa mend
      *_Catatan / Petunjuk Khusus Pimpinan_* : _..._
      =============
 
-     _Akses Dokumen : https://bit.ly/4bIVRLB_
+     _Akses Dokumen :_ https://e-suratdisparpora-blk-2026.vercel.app/
      _Username : user_
      _Password : user_
 

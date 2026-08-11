@@ -75,7 +75,7 @@ ${surat.isiRingkasan || '-'}
 *_Catatan / Petunjuk Khusus Pimpinan_* : _${catatanStr}_
 =============
 
-_Akses Dokumen : https://bit.ly/4bIVRLB_
+_Akses Dokumen :_ https://e-suratdisparpora-blk-2026.vercel.app/
 _Username : user_
 _Password : user_
 
